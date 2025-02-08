@@ -1,74 +1,75 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Platform,
+  View,
+  Text,
+  FlatList,
+} from "react-native";
+import { faker } from "@faker-js/faker";
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+const AVATAR_SIZE = 70;
+const SPACING = 20;
+
+faker.seed(10);
+const DATA = [...Array(30).keys()].map((_, i) => {
+  const gender = faker.person.sexType(); // Returns 'male' or 'female' every time
+  return {
+    key: faker.string.uuid(),
+    image: `https://randomuser.me/api/portraits/${
+      gender === "male" ? "men" : "women"
+    }/${faker.number.int({ min: 0, max: 60 })}.jpg`,
+    name: faker.internet.username(),
+    jobTitle: faker.person.jobTitle(),
+    email: faker.internet.email(),
+  };
+});
 
 export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <View style={{ flex: 1, backgroundColor: "white" }}>
+      <FlatList
+        data={DATA}
+        keyExtractor={(item) => item.key}
+        contentContainerStyle={{ padding: SPACING }}
+        renderItem={({ item, index }) => {
+          return (
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                marginBottom: SPACING,
+              }}
+            >
+              <Image
+                source={{ uri: item.image }}
+                style={{
+                  height: AVATAR_SIZE,
+                  width: AVATAR_SIZE,
+                  borderRadius: AVATAR_SIZE,
+                  marginRight: SPACING / 2,
+                }}
+              />
+
+              <View>
+                <Text style={{ fontSize: 18, fontWeight: "700" }}>
+                  {item.name}
+                </Text>
+                <Text style={{ fontSize: 12, opacity: 0.7 }}>
+                  {" "}
+                  {item.jobTitle}{" "}
+                </Text>
+                <Text style={{ fontSize: 12, opacity: 0.8, color: "#0099cc" }}>
+                  {" "}
+                  {item.email}{" "}
+                </Text>
+              </View>
+            </View>
+          );
+        }}
+      />
+    </View>
   );
 }
 
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
+const styles = StyleSheet.create({});
