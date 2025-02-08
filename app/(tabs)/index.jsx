@@ -7,6 +7,12 @@ import {
   FlatList,
 } from "react-native";
 import { faker } from "@faker-js/faker";
+import Animated, {
+  useAnimatedProps,
+  useAnimatedRef,
+  useDerivedValue,
+  useScrollViewOffset,
+} from 'react-native-reanimated';
 
 const AVATAR_SIZE = 70;
 const SPACING = 20;
@@ -26,6 +32,9 @@ const DATA = [...Array(30).keys()].map((_, i) => {
 });
 
 export default function HomeScreen() {
+  const animatedRef = useAnimatedRef()
+  const offset = useScrollViewOffset(animatedRef)
+
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <FlatList
