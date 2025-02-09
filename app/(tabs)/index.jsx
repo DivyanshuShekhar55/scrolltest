@@ -8,23 +8,22 @@ import {
 } from "react-native";
 import { faker } from "@faker-js/faker";
 import Animated, {
-  useAnimatedProps,
   useAnimatedRef,
-  useDerivedValue,
   useScrollViewOffset,
 } from 'react-native-reanimated';
 
 const AVATAR_SIZE = 70;
 const SPACING = 20;
 
+const BG_IMG = "https://images.pexels.com/photos/3147624/pexels-photo-3147624.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+
 faker.seed(10);
 const DATA = [...Array(30).keys()].map((_, i) => {
   const gender = faker.person.sexType(); // Returns 'male' or 'female' every time
   return {
     key: faker.string.uuid(),
-    image: `https://randomuser.me/api/portraits/${
-      gender === "male" ? "men" : "women"
-    }/${faker.number.int({ min: 0, max: 60 })}.jpg`,
+    image: `https://randomuser.me/api/portraits/${gender === "male" ? "men" : "women"
+      }/${faker.number.int({ min: 0, max: 60 })}.jpg`,
     name: faker.internet.username(),
     jobTitle: faker.person.jobTitle(),
     email: faker.internet.email(),
@@ -37,7 +36,9 @@ export default function HomeScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
-      <FlatList
+      <Image source={{uri:BG_IMG}} style={StyleSheet.absoluteFill} blurRadius={70}/>
+      <Animated.FlatList
+        ref={animatedRef}
         data={DATA}
         keyExtractor={(item) => item.key}
         contentContainerStyle={{ padding: SPACING }}
@@ -48,6 +49,7 @@ export default function HomeScreen() {
                 display: "flex",
                 flexDirection: "row",
                 marginBottom: SPACING,
+                padding:SPACING
               }}
             >
               <Image
