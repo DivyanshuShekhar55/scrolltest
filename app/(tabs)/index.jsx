@@ -65,6 +65,7 @@ const ListItem = ({ item, index, offset }) => {
         flexDirection: "row",
         marginBottom: SPACING,
         padding: SPACING,
+        borderRadius: 18,
         backgroundColor: 'rgba(255, 255, 255, 0.8)'
       }, animatedStyle]}
     >
