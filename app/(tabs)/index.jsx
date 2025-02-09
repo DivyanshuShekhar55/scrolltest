@@ -43,8 +43,18 @@ const ListItem = ({ item, index, offset }) => {
   const opacityInput = [
     -1, 0, ITEM_SIZE * index, ITEM_SIZE * (index + 0.5)
   ]
+
+  const scaleInput = [
+    -1, 0, ITEM_SIZE * index, ITEM_SIZE * (index + 2)
+  ]
+
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: interpolate(offset.value, opacityInput, [1, 1, 1, 0], 'clamp'),
+    transform: [
+      {
+        scale: interpolate(offset.value, scaleInput, [1, 1, 1, 0], 'clamp')
+      }
+    ]
 
   }))
 
